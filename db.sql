@@ -1,0 +1,5 @@
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    chat_id BIGINT UNIQUE NOT NULL,
+    balance DECIMAL(10, 2) DEFAULT 0.00
+);
