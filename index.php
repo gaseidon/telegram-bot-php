@@ -1,15 +1,13 @@
 <?php
 
-// Конфигурация базы данных
 define('DB_HOST', 'localhost');
 define('DB_USER', 'cx94920_tg');
 define('DB_PASS', 'MUzzDj16');
 define('DB_NAME', 'cx94920_tg');
 
-// Токен вашего бота
 define('BOT_TOKEN', '7820177935:AAH0kHBF9rri0N9qH8etx7p_h9I3gq6xbrY');
 
-// Функция для отправки сообщений
+
 function sendMessage($chatId, $text) {
     $url = "https://api.telegram.org/bot" . BOT_TOKEN . "/sendMessage";
     $postData = http_build_query([
@@ -29,7 +27,7 @@ function sendMessage($chatId, $text) {
     file_get_contents($url, false, $context);
 }
 
-// Функция для подключения к базе данных
+
 function connectDB() {
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     if ($conn->connect_error) {
@@ -38,7 +36,7 @@ function connectDB() {
     return $conn;
 }
 
-// Функция для получения или создания пользователя
+
 function getUser($chatId) {
     $conn = connectDB();
     $stmt = $conn->prepare("SELECT * FROM users WHERE chat_id = ?");
@@ -56,7 +54,7 @@ function getUser($chatId) {
     }
 }
 
-// Функция для обновления баланса пользователя
+
 function updateBalance($chatId, $amount) {
     $conn = connectDB();
     $conn->begin_transaction();
@@ -89,7 +87,7 @@ function updateBalance($chatId, $amount) {
     }
 }
 
-// Обработка входящих сообщений
+
 $content = file_get_contents("php://input");
 $update = json_decode($content, true);
 
@@ -98,10 +96,10 @@ if (isset($update['message'])) {
     $chatId = $message['chat']['id'];
     $text = $message['text'];
 
-    // Получаем или создаем пользователя
+
     $user = getUser($chatId);
 
-    // Проверяем, является ли сообщение числом
+
     $amount = str_replace(',', '.', $text);
     if (is_numeric($amount)) {
         $amount = (float)$amount;
